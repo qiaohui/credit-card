@@ -30,7 +30,6 @@ public class ApiHelper {
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ApiHelper.class);
     private static final String VIEW_PATH = "com.pay.card.view";
 
-    private CardBuildContext buildContext;
     private SimpleModelBuilder<CardBuildContext> modelBuilder;
     private ViewMapper viewMapper;
 
@@ -40,10 +39,6 @@ public class ApiHelper {
 
     public ModelBuilder<CardBuildContext> getModelBuilder() {
         return modelBuilder;
-    }
-
-    public CardBuildContext getBuildContext() {
-        return buildContext;
     }
 
     private ViewMapper scan(String pkg, Set<Class<?>> ignoreViews) {
@@ -94,7 +89,6 @@ public class ApiHelper {
 
     @PostConstruct
     private void init() {
-        buildContext = new CardBuildContext();
         viewMapper = scan(VIEW_PATH, Collections.emptySet());
         modelBuilder = new SimpleModelBuilder<>();
     }

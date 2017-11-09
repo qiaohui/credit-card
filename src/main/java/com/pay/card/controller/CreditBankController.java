@@ -28,7 +28,7 @@ public class CreditBankController extends BaseController {
     public JsonResultView<?> getBanks() {
 
         List<CreditBank> rv = bankService.getBanks();
-        CardBuildContext buildContext = apiHelper.getBuildContext();
+        CardBuildContext buildContext = new CardBuildContext();
         apiHelper.getModelBuilder().buildMulti(rv, buildContext);
         return new JsonResultView<>().setPayload(apiHelper.getViewMapper().map(rv, buildContext));
     }
