@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.github.phantomthief.model.builder.ModelBuilder;
 import com.github.phantomthief.model.builder.impl.SimpleModelBuilder;
 import com.github.phantomthief.view.mapper.ViewMapper;
 import com.github.phantomthief.view.mapper.impl.DefaultViewMapperImpl;
@@ -27,8 +28,25 @@ import com.pay.card.web.context.CardBuildContext;
 public class ApiHelper {
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ApiHelper.class);
+    private static final String VIEW_PATH = "com.pay.card.view";
 
-    private static ViewMapper scan(String pkg, Set<Class<?>> ignoreViews) {
+    private CardBuildContext buildContext;
+    private SimpleModelBuilder<CardBuildContext> modelBuilder;
+    private ViewMapper viewMapper;
+
+    public ViewMapper getViewMapper() {
+        return viewMapper;
+    }
+
+    public ModelBuilder<CardBuildContext> getModelBuilder() {
+        return modelBuilder;
+    }
+
+    public CardBuildContext getBuildContext() {
+        return buildContext;
+    }
+
+    private ViewMapper scan(String pkg, Set<Class<?>> ignoreViews) {
         DefaultViewMapperImpl viewMapper = new DefaultViewMapperImpl();
         try {
             ImmutableSet<ClassInfo> topLevelClasses = ClassPath.from(ApiHelper.class.getClassLoader())
@@ -41,9 +59,8 @@ public class ApiHelper {
                 Constructor<?>[] constructors = type.getConstructors();
                 for (Constructor<?> constructor : constructors) {
                     Class<?>[] parameterTypes = constructor.getParameterTypes();
-                    if (parameterTypes.length == 2 && parameterTypes[1] == CardBuildContext.class) {
-                        logger.info("register view [{}] for model [{}] with buildContext.", type.getSimpleName(),
-                                parameterTypes[0].getSimpleName());
+                    if (2 == parameterTypes.length
+                            && parameterTypes[1].getName().equals(CardBuildContext.class.getName())) {
                         viewMapper.addMapper(parameterTypes[0], (buildContext, i) -> {
                             try {
                                 return constructor.newInstance(i, buildContext);
@@ -52,10 +69,10 @@ public class ApiHelper {
                                 return null;
                             }
                         });
+                        logger.info("register view [{}] for model [{}] with buildContext.", type.getSimpleName(),
+                                parameterTypes[0].getSimpleName());
                     }
                     if (parameterTypes.length == 1) {
-                        logger.info("register view [{}] for model [{}]", type.getSimpleName(),
-                                parameterTypes[0].getSimpleName());
                         viewMapper.addMapper(parameterTypes[0], (buildContext, i) -> {
                             try {
                                 return constructor.newInstance(i);
@@ -64,6 +81,8 @@ public class ApiHelper {
                                 return null;
                             }
                         });
+                        logger.info("register view [{}] for model [{}]", type.getSimpleName(),
+                                parameterTypes[0].getSimpleName());
                     }
                 }
             }
@@ -73,26 +92,10 @@ public class ApiHelper {
         return viewMapper;
     }
 
-    private CardBuildContext buildContext;
-    private SimpleModelBuilder<CardBuildContext> modelBuilder;
-    private ViewMapper viewMapper;
-
-    public ViewMapper getViewMapper() {
-        return viewMapper;
-    }
-
-    public SimpleModelBuilder<CardBuildContext> getModelBuilder() {
-        return modelBuilder;
-    }
-
-    public CardBuildContext getBuildContext() {
-        return buildContext;
-    }
-
     @PostConstruct
     private void init() {
-        viewMapper = scan("com.pay.card.view", Collections.emptySet());
         buildContext = new CardBuildContext();
-        modelBuilder = new SimpleModelBuilder<CardBuildContext>();
+        viewMapper = scan(VIEW_PATH, Collections.emptySet());
+        modelBuilder = new SimpleModelBuilder<>();
     }
 }
