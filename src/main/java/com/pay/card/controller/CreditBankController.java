@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pay.card.model.CreditBank;
 import com.pay.card.service.CreditBankService;
 import com.pay.card.view.JsonResultView;
-import com.pay.card.web.annotation.LoginRequired;
 import com.pay.card.web.context.CardBuildContext;
 
 /**
@@ -26,7 +25,6 @@ public class CreditBankController extends BaseController {
     private CreditBankService bankService;
 
     @RequestMapping(value = "/api/bank")
-    @LoginRequired
     public JsonResultView<?> getBanks() {
 
         System.out.println("----------");

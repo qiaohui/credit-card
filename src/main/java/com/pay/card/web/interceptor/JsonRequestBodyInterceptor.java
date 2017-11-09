@@ -37,7 +37,7 @@ public class JsonRequestBodyInterceptor extends HandlerInterceptorAdapter {
 
             String device_info = request.getHeader("deviceinfo");
             logger.info("API请求Header：" + device_info);
-            if (!StringUtils.isEmpty(device_info)) {
+            if (!StringUtils.isEmpty(device_info) && null != json) {
                 aysncLog.asyncRun(device_info, rurl, rawData);
             }
         } catch (Throwable e) {

@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WechatWifiApplicationTests {
+public class CreditCardApplicationTests {
 
 	@Test
 	public void contextLoads() {
