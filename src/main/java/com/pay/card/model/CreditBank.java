@@ -1,7 +1,5 @@
 package com.pay.card.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,11 +18,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 @Table(name = "credit_bank")
 @Entity
-public class CreditBank implements Serializable {
-    // public class CreditBank extends BaseModel<Integer> implements
-    // Serializable {
-
-    private static final long serialVersionUID = -8903824146225313678L;
+public class CreditBank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

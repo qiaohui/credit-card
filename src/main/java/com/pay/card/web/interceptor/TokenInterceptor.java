@@ -45,11 +45,6 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         }
         LoginRequired loginRequired = MethodInterceptorUtils.getAnnotaion(handler, LoginRequired.class);
         if (loginRequired != null && userId == null) {
-            // PrintWriter out = response.getWriter();
-            // out.write("{request url:" + request.getRequestURI() +
-            // ",\"code\":" + HttpStatus.SC_UNAUTHORIZED + "}");
-            // out.flush();
-            // out.close();
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             logger.error("login required token error:{}", json);
             return false;

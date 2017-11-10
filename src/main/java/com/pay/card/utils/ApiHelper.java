@@ -32,16 +32,21 @@ public class ApiHelper {
 
     private SimpleModelBuilder<CardBuildContext> modelBuilder;
     private ViewMapper viewMapper;
+    private CardBuildContext buildContext;
 
     public ViewMapper getViewMapper() {
         return viewMapper;
+    }
+
+    public CardBuildContext getBuildContext() {
+        return buildContext;
     }
 
     public ModelBuilder<CardBuildContext> getModelBuilder() {
         return modelBuilder;
     }
 
-    private ViewMapper scan(String pkg, Set<Class<?>> ignoreViews) {
+    public static final ViewMapper scan(String pkg, Set<Class<?>> ignoreViews) {
         DefaultViewMapperImpl viewMapper = new DefaultViewMapperImpl();
         try {
             ImmutableSet<ClassInfo> topLevelClasses = ClassPath.from(ApiHelper.class.getClassLoader())
@@ -54,8 +59,7 @@ public class ApiHelper {
                 Constructor<?>[] constructors = type.getConstructors();
                 for (Constructor<?> constructor : constructors) {
                     Class<?>[] parameterTypes = constructor.getParameterTypes();
-                    if (2 == parameterTypes.length
-                            && parameterTypes[1].getName().equals(CardBuildContext.class.getName())) {
+                    if (parameterTypes.length == 2) {
                         viewMapper.addMapper(parameterTypes[0], (buildContext, i) -> {
                             try {
                                 return constructor.newInstance(i, buildContext);
@@ -64,7 +68,7 @@ public class ApiHelper {
                                 return null;
                             }
                         });
-                        logger.info("register view [{}] for model [{}] with buildContext.", type.getSimpleName(),
+                        logger.info("register view [{}] for model [{}], with buildContext.", type.getSimpleName(),
                                 parameterTypes[0].getSimpleName());
                     }
                     if (parameterTypes.length == 1) {
@@ -89,6 +93,7 @@ public class ApiHelper {
 
     @PostConstruct
     private void init() {
+        buildContext = new CardBuildContext();
         viewMapper = scan(VIEW_PATH, Collections.emptySet());
         modelBuilder = new SimpleModelBuilder<>();
     }

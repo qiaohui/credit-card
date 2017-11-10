@@ -1,6 +1,8 @@
 package com.pay.card.service.impl;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,11 @@ public class CreditBankServiceImpl implements CreditBankService {
     @Override
     public List<CreditBank> getBanks() {
         return bankDao.findAll();
+    }
+
+    @Override
+    public Map<Long, CreditBank> getBanks(Collection<Long> ids) {
+        return null;
     }
 
 }
