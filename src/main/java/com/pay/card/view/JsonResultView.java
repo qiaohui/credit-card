@@ -14,21 +14,21 @@ public class JsonResultView<T> {
 
     private int code;
 
-    private T payload;
+    private T data;
 
-    private Object payload2;
+    private Object payload;
 
     public int getCode() {
         return code;
     }
 
     @JsonUnwrapped
-    public T getPayload() {
-        return payload;
+    public T getData() {
+        return data;
     }
 
-    public Object getPayload2() {
-        return payload2;
+    public Object getPayload() {
+        return payload;
     }
 
     public JsonResultView<T> setCode(int code) {
@@ -36,13 +36,13 @@ public class JsonResultView<T> {
         return this;
     }
 
-    public JsonResultView<T> setPayload(T payload) {
-        this.payload = payload;
+    public JsonResultView<T> setData(T data) {
+        this.data = data;
         return this;
     }
 
-    public JsonResultView<T> setPayload2(Object payload2) {
-        this.payload2 = payload2;
+    public JsonResultView<T> setPayload(Object payload) {
+        this.payload = payload;
         return this;
     }
 

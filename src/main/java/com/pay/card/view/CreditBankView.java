@@ -1,32 +1,26 @@
 package com.pay.card.view;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.pay.card.model.CreditBank;
+import com.pay.card.utils.UuidUtils;
+import com.pay.card.web.context.CardBuildContext;
 
 public class CreditBankView {
 
-    // private final CreditBank bank;
-    //
-    // private final CardBuildContext buildContext;
-    //
-    // public CreditBankView(CreditBank bank, CardBuildContext buildContext) {
-    // this.bank = bank;
-    // this.buildContext = buildContext;
-    // }
+    private final CreditBank bank;
 
-    // public String getId() {
-    // return UuidUtils.getUuid(bank.getId());
-    // }
-    //
-    // public String getName() {
-    // return bank.getName();
-    // }
+    private final CardBuildContext buildContext;
 
-    public Long id;
-    public String name;
+    public CreditBankView(CreditBank bank, CardBuildContext buildContext) {
+        this.bank = bank;
+        this.buildContext = buildContext;
+    }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public String getId() {
+        return UuidUtils.getUuid(bank.getId());
+    }
+
+    public String getName() {
+        return bank.getName();
     }
 
 }
