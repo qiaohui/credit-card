@@ -93,8 +93,8 @@ public class ApiHelper {
 
     @PostConstruct
     private void init() {
-        buildContext = new CardBuildContext();
         viewMapper = scan(VIEW_PATH, Collections.emptySet());
-        modelBuilder = new SimpleModelBuilder<>();
+        buildContext = new CardBuildContext();
+        modelBuilder = new SimpleModelBuilder<CardBuildContext>();
     }
 }

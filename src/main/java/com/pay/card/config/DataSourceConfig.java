@@ -17,8 +17,4 @@ public class DataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
-    // @Bean
-    // public PlatformTransactionManager txManager(DataSource dataSource) {
-    // return new DataSourceTransactionManager(dataSource);
-    // }
 }

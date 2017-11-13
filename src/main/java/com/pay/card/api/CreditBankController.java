@@ -1,4 +1,4 @@
-package com.pay.card.controller;
+package com.pay.card.api;
 
 import java.util.List;
 
@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.card.model.CreditBank;
 import com.pay.card.service.CreditBankService;
+import com.pay.card.utils.BeanMapper;
+import com.pay.card.view.CreditBankView;
 import com.pay.card.view.JsonResultView;
-import com.pay.card.web.context.CardBuildContext;
 
 /**
  * 
@@ -27,9 +28,12 @@ public class CreditBankController extends BaseController {
     @RequestMapping(value = "/api/bank")
     public JsonResultView<?> getBanks() {
         List<CreditBank> rv = bankService.getBanks();
-        CardBuildContext buildContext = apiHelper.getBuildContext();
-        apiHelper.getModelBuilder().buildMulti(rv, buildContext);
-        return new JsonResultView<>().setPayload(apiHelper.getViewMapper().map(rv, buildContext));
+        // CardBuildContext buildContext = apiHelper.getBuildContext();
+        // apiHelper.getModelBuilder().buildMulti(rv, buildContext);
+        // return new
+        // JsonResultView<>().setPayload(apiHelper.getViewMapper().map(rv,
+        // buildContext));
+        return new JsonResultView<>().setPayload(BeanMapper.mapList(rv, CreditBank.class, CreditBankView.class));
     }
 
 }
