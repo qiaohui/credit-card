@@ -10,10 +10,19 @@ package com.pay.card.view;
  */
 public class JsonResultView<T> {
 
+    /**
+     * code
+     */
     private int code;
 
+    /**
+     * 这里存放返回的主要数据
+     */
     private T data;
 
+    /**
+     * 这里可以存放需要返回的 token ，可以为空
+     */
     private Object payload;
 
     public int getCode() {
