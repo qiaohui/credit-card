@@ -3,8 +3,6 @@
  */
 package com.pay.card.view;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 /**
  * @author qiaohui
  * 
@@ -22,7 +20,6 @@ public class JsonResultView<T> {
         return code;
     }
 
-    @JsonUnwrapped
     public T getData() {
         return data;
     }
