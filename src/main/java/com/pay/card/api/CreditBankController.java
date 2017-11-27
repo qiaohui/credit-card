@@ -1,11 +1,13 @@
 package com.pay.card.api;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.http.client.methods.HttpGet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
 import com.pay.card.model.CreditBank;
 import com.pay.card.service.CreditBankService;
@@ -31,11 +33,19 @@ public class CreditBankController extends BaseController {
 
     @ApiOperation(value = "获取所有银行，银行 id 转 uuid", httpMethod = HttpGet.METHOD_NAME)
     @RequestMapping(value = "/api/bank")
-    public JsonResultView<?> getBanks() {
-        List<CreditBank> rv = bankService.getBanks();
-        CardBuildContext buildContext = apiHelper.getBuildContext();
-        apiHelper.getModelBuilder().buildMulti(rv, buildContext);
-        return new JsonResultView<>().setData(apiHelper.getViewMapper().map(rv, buildContext));
+    public WebAsyncTask<JsonResultView<?>> getBanks() {
+
+        Callable<JsonResultView<?>> callable = new Callable<JsonResultView<?>>() {
+            @Override
+            public JsonResultView<?> call() throws Exception {
+
+                List<CreditBank> rv = bankService.getBanks();
+                CardBuildContext buildContext = apiHelper.getBuildContext();
+                apiHelper.getModelBuilder().buildMulti(rv, buildContext);
+                return new JsonResultView<>().setData(apiHelper.getViewMapper().map(rv, buildContext));
+            }
+        };
+        return new WebAsyncTask<JsonResultView<?>>(callable);
     }
 
 }
