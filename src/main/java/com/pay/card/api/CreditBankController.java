@@ -35,17 +35,16 @@ public class CreditBankController extends BaseController {
     @RequestMapping(value = "/api/bank")
     public WebAsyncTask<JsonResultView<?>> getBanks() {
 
-        Callable<JsonResultView<?>> callable = new Callable<JsonResultView<?>>() {
+        WebAsyncTask<JsonResultView<?>> webAsyncTask = new WebAsyncTask<>(timeout, new Callable<JsonResultView<?>>() {
             @Override
             public JsonResultView<?> call() throws Exception {
-
                 List<CreditBank> rv = bankService.getBanks();
                 CardBuildContext buildContext = apiHelper.getBuildContext();
                 apiHelper.getModelBuilder().buildMulti(rv, buildContext);
                 return new JsonResultView<>().setData(apiHelper.getViewMapper().map(rv, buildContext));
             }
-        };
-        return new WebAsyncTask<JsonResultView<?>>(callable);
+        });
+        return webAsyncTask;
     }
 
 }

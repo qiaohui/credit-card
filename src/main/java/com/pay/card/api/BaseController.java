@@ -19,4 +19,6 @@ public abstract class BaseController {
     @Autowired
     protected ApiHelper apiHelper;
 
+    public static final long timeout = 10L * 1000; // 自定义超时时间 1秒
+
 }
